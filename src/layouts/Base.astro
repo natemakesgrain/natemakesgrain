@@ -1,0 +1,53 @@
+---
+import "../styles/global.css";
+const { title, description = "Fine art photography by Nate Jones." } = Astro.props;
+const path = Astro.url.pathname;
+const here = (p) => path === p || (p !== "/" && path.startsWith(p));
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} · nate makes grain` : "nate makes grain"}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500&display=swap" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-title">
+        <a href="/">nate makes grain</a>
+      </div>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/" aria-current={here("/") && path === "/" ? "page" : undefined}>gallery</a>
+        <a href="/about/" aria-current={here("/about") ? "page" : undefined}>about</a>
+        <a href="/contact/" aria-current={here("/contact") ? "page" : undefined}>contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <div class="viewport-fade viewport-fade-bottom" aria-hidden="true"></div>
+
+    <footer class="site-footer">
+      <span>&copy; {new Date().getFullYear()} Nate Jones</span>
+      <span class="footer-links">
+        <a class="ig-link" href="https://instagram.com/natemakesgrain" rel="me noopener" target="_blank" aria-label="Instagram, @natemakesgrain">
+          <svg class="ig-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>@natemakesgrain</span>
+        </a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>
+      </span>
+    </footer>
+  </body>
+</html>

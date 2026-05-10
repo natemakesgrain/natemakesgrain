@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.DS_Store
+*.log
+.claude/
+
+# Original RAW/scan archive lives locally only — too large for GitHub.
+# Back these up separately (cloud / external drive). The cropped, web-sized
+# copies in src/photos/ are what's deployed.
+Photo archive/

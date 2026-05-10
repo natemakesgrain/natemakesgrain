@@ -1,0 +1,265 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import { photos } from "../data/photos.js";
+---
+<Base title="Gallery" description="Fine art photography. Americana and landscapes, in monochrome and color, by Nate Jones.">
+  <section class="page">
+    <div class="filters" role="toolbar" aria-label="Gallery filters">
+      <div class="group" data-filter-group="tone">
+        <button class="filter-btn" type="button" data-value="all" aria-pressed="true">all</button>
+        <button class="filter-btn" type="button" data-value="monochrome" aria-pressed="false">monochrome</button>
+        <button class="filter-btn" type="button" data-value="color" aria-pressed="false">color</button>
+      </div>
+    </div>
+
+    <div class="gallery" id="gallery">
+      {photos.map(p => (
+        <figure
+          class:list={["tile", p.feature && "feature"]}
+          data-tone={p.tone}
+          data-title={p.title}
+          data-id={p.id}
+          tabindex="0"
+        >
+          <Image
+            src={p.src}
+            alt={p.alt}
+            widths={p.feature ? [600, 1000, 1600, 2200] : [400, 700, 1100, 1500]}
+            sizes={p.feature
+              ? "(max-width: 560px) 100vw, (max-width: 900px) 100vw, 50vw"
+              : "(max-width: 560px) 100vw, (max-width: 900px) 50vw, 25vw"}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>{p.title}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p class="gallery-empty" id="gallery-empty" hidden>No photos match those filters.</p>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" type="button" aria-label="Close" data-close>close</button>
+      <img id="lightbox-img" alt="" />
+      <div class="lightbox-meta">
+        <p class="lightbox-title" id="lightbox-title"></p>
+        <a class="lightbox-cta" id="lightbox-inquire" href="/contact/">Inquire about a print →</a>
+      </div>
+    </div>
+  </dialog>
+</Base>
+
+<script>
+  const tiles = Array.from(document.querySelectorAll<HTMLElement>(".tile"));
+  const empty = document.getElementById("gallery-empty");
+  const groups = document.querySelectorAll<HTMLElement>("[data-filter-group]");
+
+  /* ---------- Absolute-positioned masonry with feature look-ahead ----------
+     Each tile gets pixel-exact top/left/width/height. We walk visible tiles in
+     order; for each one, choose the column (or column pair, for features) that
+     yields the lowest start-y. Before placing a feature, if the two columns it
+     would span are uneven, search forward for a small regular tile that fits in
+     the gap, place that filler first to keep the bottom puzzle-tight. */
+  const gallery = document.getElementById("gallery") as HTMLElement;
+  const COL_BREAKPOINTS = [
+    { minWidth: 1100, cols: 4 },
+    { minWidth: 760,  cols: 3 },
+    { minWidth: 460,  cols: 2 },
+    { minWidth: 0,    cols: 1 },
+  ];
+  const GAP = 16; // px, must match CSS gap
+
+  function colCount() {
+    const w = window.innerWidth;
+    return COL_BREAKPOINTS.find(b => w >= b.minWidth)!.cols;
+  }
+
+  function clearAbs(tile: HTMLElement) {
+    tile.style.left = "";
+    tile.style.top = "";
+    tile.style.width = "";
+    tile.style.height = "";
+  }
+
+  function imgRatio(tile: HTMLElement) {
+    const img = tile.querySelector("img") as HTMLImageElement | null;
+    if (!img || !img.naturalWidth || !img.naturalHeight) return 0;
+    return img.naturalHeight / img.naturalWidth;
+  }
+
+  function layoutAll() {
+    const cols = colCount();
+
+    if (cols < 2) {
+      // Mobile: CSS handles the static flow; clear inline styles.
+      tiles.forEach(clearAbs);
+      gallery.style.height = "";
+      gallery.classList.add("is-laid-out");
+      return;
+    }
+
+    const galleryWidth = gallery.getBoundingClientRect().width;
+    const colWidth = (galleryWidth - GAP * (cols - 1)) / cols;
+
+    // Column bottom-y tracker (in pixels)
+    const colY = new Array(cols).fill(0);
+
+    // Working queue of visible tiles (in DOM order)
+    const visible = tiles.filter(t => {
+      if (t.classList.contains("is-hidden")) {
+        clearAbs(t);
+        return false;
+      }
+      return imgRatio(t) > 0;
+    });
+
+    const placed = new Set<HTMLElement>();
+    const place = (tile: HTMLElement, col: number, span: number) => {
+      const w = colWidth * span + GAP * (span - 1);
+      const h = w * imgRatio(tile);
+      const startY = Math.max(...Array.from({ length: span }, (_, k) => colY[col + k]));
+      tile.style.left = `${col * (colWidth + GAP)}px`;
+      tile.style.top = `${startY}px`;
+      tile.style.width = `${w}px`;
+      tile.style.height = `${h}px`;
+      const newY = startY + h + GAP;
+      for (let k = 0; k < span; k++) colY[col + k] = newY;
+      placed.add(tile);
+    };
+
+    const findBestPos = (span: number) => {
+      let bestCol = 0, bestY = Infinity;
+      for (let c = 0; c <= cols - span; c++) {
+        const y = Math.max(...Array.from({ length: span }, (_, k) => colY[c + k]));
+        if (y < bestY) { bestY = y; bestCol = c; }
+      }
+      return { col: bestCol, y: bestY };
+    };
+
+    for (let i = 0; i < visible.length; i++) {
+      const tile = visible[i];
+      if (placed.has(tile)) continue;
+
+      const isFeature = tile.classList.contains("feature");
+      const span = isFeature && cols >= 2 ? Math.min(2, cols) : 1;
+
+      if (span === 2) {
+        // Find best column pair for the feature.
+        const { col, y } = findBestPos(2);
+        const ya = colY[col], yb = colY[col + 1];
+        const gapHeight = Math.abs(ya - yb);
+
+        // If meaningful gap, scan forward for a small regular tile that fits.
+        if (gapHeight > 24) {
+          const shortCol = ya <= yb ? col : col + 1;
+          const slot = gapHeight; // available space in shorter column
+          let fillerIdx = -1;
+          let fillerCloseness = Infinity;
+          for (let j = i + 1; j < visible.length; j++) {
+            const cand = visible[j];
+            if (placed.has(cand) || cand.classList.contains("feature")) continue;
+            const candHeight = colWidth * imgRatio(cand);
+            if (candHeight + GAP <= slot + 8) { // +8 fuzz
+              const closeness = Math.abs(slot - (candHeight + GAP));
+              if (closeness < fillerCloseness) {
+                fillerCloseness = closeness;
+                fillerIdx = j;
+              }
+            }
+          }
+          if (fillerIdx >= 0) {
+            place(visible[fillerIdx], shortCol, 1);
+            i--; // reconsider this feature position
+            continue;
+          }
+        }
+        place(tile, col, 2);
+      } else {
+        const { col } = findBestPos(1);
+        place(tile, col, 1);
+      }
+    }
+
+    gallery.style.height = `${Math.max(0, ...colY) - GAP}px`;
+    gallery.classList.add("is-laid-out");
+  }
+
+  // Initial: layout once images are decoded.
+  Promise.all(
+    tiles.map(t => {
+      const img = t.querySelector("img") as HTMLImageElement;
+      if (img.complete) return Promise.resolve();
+      return new Promise<void>(res => {
+        img.addEventListener("load", () => res(), { once: true });
+        img.addEventListener("error", () => res(), { once: true });
+      });
+    })
+  ).then(layoutAll);
+
+  // Also layout right away in case some images are already cached.
+  requestAnimationFrame(layoutAll);
+
+  // Recompute on resize (debounced).
+  let raf = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(layoutAll);
+  });
+
+  /* ---------- Filtering ---------- */
+  let selectedTone = "all";
+  groups.forEach(group => {
+    group.querySelectorAll<HTMLButtonElement>(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedTone = btn.dataset.value!;
+        group.querySelectorAll<HTMLButtonElement>(".filter-btn").forEach(b => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        applyFilters();
+      });
+    });
+  });
+
+  function applyFilters() {
+    let shown = 0;
+    for (const t of tiles) {
+      const tone = t.dataset.tone || "";
+      const visible = selectedTone === "all" || selectedTone === tone;
+      t.classList.toggle("is-hidden", !visible);
+      if (visible) shown++;
+    }
+    if (empty) empty.hidden = shown !== 0;
+    requestAnimationFrame(layoutAll);
+  }
+
+  /* ---------- Lightbox ---------- */
+  const dialog = document.getElementById("lightbox") as HTMLDialogElement;
+  const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+  const lbTitle = document.getElementById("lightbox-title") as HTMLElement;
+  const lbInquire = document.getElementById("lightbox-inquire") as HTMLAnchorElement;
+
+  tiles.forEach(t => {
+    const open = () => {
+      const img = t.querySelector("img") as HTMLImageElement;
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt;
+      const title = t.dataset.title || "";
+      lbTitle.textContent = title;
+      const subject = `Print inquiry: ${title}`;
+      lbInquire.href = `/contact/?subject=${encodeURIComponent(subject)}`;
+      if (typeof dialog.showModal === "function") dialog.showModal();
+    };
+    t.addEventListener("click", open);
+    t.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+    });
+  });
+
+  dialog.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.matches("[data-close]") || target === dialog) dialog.close();
+  });
+</script>

@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+const subjectFromUrl = Astro.url.searchParams.get("subject") || "";
+const sent = Astro.url.searchParams.get("sent") === "1";
+---
+<Base title="Contact" description="Get in touch with Nate Jones at nate makes grain.">
+  <section class="page prose">
+    <h1>Contact</h1>
+
+    <p class="lede">
+      Send a note about prints, licensing, or just to say hello. Replies come from
+      <a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>.
+    </p>
+
+    {sent && (
+      <p id="thanks" class="thanks">
+        Thanks, your message went through. I'll reply soon.
+      </p>
+    )}
+
+    <form
+      class="form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      action="/contact/?sent=1"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="honey">
+        <label>Don't fill this out: <input name="bot-field" /></label>
+      </p>
+
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>Subject</span>
+        <input type="text" name="subject" value={subjectFromUrl} />
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" required rows="6"></textarea>
+      </label>
+      <button type="submit">send</button>
+    </form>
+  </section>
+</Base>

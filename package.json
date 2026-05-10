@@ -1,0 +1,19 @@
+{
+  "name": "natemakesgrain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "survey": "node scripts/survey.mjs",
+    "process": "node scripts/process.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  },
+  "dependencies": {
+    "astro": "^6.3.1"
+  }
+}
