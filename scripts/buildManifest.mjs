@@ -240,6 +240,61 @@ const PROPOSALS = {
     feature: true,
     note: "San Francisco Painted Lady at twilight (Ektachrome, replaces earlier scan)"
   },
+  "71466742_1125348_c6750295fbebf35533f8aad4a5d6e2eb_full.jpeg": {
+    name: "rouses-french-quarter",
+    title: "Rouses, French Quarter",
+    note: "French Quarter alley, iron balconies, Rouses Market sign, B&W"
+  },
+  "71466744_1125348_7b0ba2555a868cfadbc7be58cda0e3a0_full (1).jpeg": {
+    name: "manhattan-looking-downtown",
+    title: "Manhattan, Looking Downtown",
+    note: "Midtown towers framing One World Trade in the distance, B&W"
+  },
+  "71466745_1125348_7b0ba2555a868cfadbc7be58cda0e3a0_full.jpeg": {
+    name: "entrecote-late",
+    title: "Entrecôte, Late",
+    note: "Le Relais de Venise neon at night, NYC"
+  },
+  "71466753_1125348_77d395cd7ae957e5ed3fd2f73468d22e_full.jpeg": {
+    name: "concourse-grand-central",
+    title: "Concourse, Grand Central",
+    note: "Grand Central main concourse, slow shutter, motion-blurred crowd"
+  },
+  "71466762_1125348_b1583f038b9cbf8d60535759d4b623cd_full.jpeg": {
+    name: "boutique-du-vampyre",
+    title: "Boutique du Vampyre",
+    note: "Wrought-iron sign with dramatic shadow on terracotta stucco, French Quarter"
+  },
+  "71466767_1125348_2c10cde154eebb7cccc6976cc3bfe49a_full.jpeg": {
+    name: "boogie-woogie-bourbon",
+    title: "Boogie Woogie, Bourbon",
+    note: "Boogie Woogie neon on Bourbon Street, layered signage at dusk"
+  },
+  "71466769_1125348_7364b15cb9b9b266ddc1e467310f4ae6_full.jpeg": {
+    name: "drummers-bourbon",
+    title: "Drummers, Bourbon",
+    note: "Street drummers mid-performance, Bourbon Street, neon and flag behind"
+  },
+  "71466778_1125348_9c6f0c8cdb9edc2292851ff5f701d07b_full.jpeg": {
+    name: "city-of-new-orleans",
+    title: "City of New Orleans",
+    note: "Red paddlewheel of riverboat City of New Orleans with cargo ship on the Mississippi"
+  },
+  "_DSC0437_VSCO (2).jpeg": {
+    name: "park-first-snow",
+    title: "Park, First Snow",
+    note: "Two figures walking a snowy park path under bare trees, golden light"
+  },
+  "_DSC0584 (1).jpeg": {
+    name: "pink-wall-houston",
+    title: "Pink Wall, Houston",
+    note: "Couple on a red scooter against a pink wall, Houston skyline behind"
+  },
+  "_DSC1078 (1).jpeg": {
+    name: "old-and-new",
+    title: "Old and New",
+    note: "Brick low-rises in foreground, glass tower behind, B&W"
+  },
 };
 
 const survey = JSON.parse(await readFile(SURVEY_PATH, "utf8"));
