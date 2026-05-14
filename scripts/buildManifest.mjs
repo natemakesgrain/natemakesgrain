@@ -295,6 +295,12 @@ const PROPOSALS = {
     title: "Old and New",
     note: "Brick low-rises in foreground, glass tower behind, B&W"
   },
+  "71466772_1125348_d7770d73cb96d278cac4ac236864c929_full.jpeg": {
+    name: "tracks-crossing",
+    title: "Tracks, Crossing",
+    feature: true,
+    note: "Painted RR crossing post with caution signage, streetcar tracks leading to modern facade, New Orleans"
+  },
 };
 
 const survey = JSON.parse(await readFile(SURVEY_PATH, "utf8"));

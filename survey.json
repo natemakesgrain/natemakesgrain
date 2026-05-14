@@ -711,6 +711,27 @@
     "tags": []
   },
   {
+    "original": "71466772_1125348_d7770d73cb96d278cac4ac236864c929_full.jpeg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 45.92,
+    "monochrome": false,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
     "original": "71466778_1125348_9c6f0c8cdb9edc2292851ff5f701d07b_full.jpeg",
     "width": 4832,
     "height": 4760,
