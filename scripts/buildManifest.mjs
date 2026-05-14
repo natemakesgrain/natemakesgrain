@@ -301,6 +301,11 @@ const PROPOSALS = {
     feature: true,
     note: "Painted RR crossing post with caution signage, streetcar tracks leading to modern facade, New Orleans"
   },
+  "71466759_1125348_09d96cffe3399f19810c08bfac7c319e_full.jpeg": {
+    name: "plaza-mist",
+    title: "Plaza, Mist",
+    note: "Cooling-mist canopies with figure crouched in the steam, parked bicycle in foreground"
+  },
 };
 
 const survey = JSON.parse(await readFile(SURVEY_PATH, "utf8"));
