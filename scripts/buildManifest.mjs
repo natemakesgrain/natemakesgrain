@@ -304,7 +304,12 @@ const PROPOSALS = {
   "71466759_1125348_09d96cffe3399f19810c08bfac7c319e_full.jpeg": {
     name: "plaza-mist",
     title: "Plaza, Mist",
-    note: "Cooling-mist canopies with figure crouched in the steam, parked bicycle in foreground"
+    note: "Cooling-mist canopies with figure crouched in the steam, parked bicycle in foreground (recropped)"
+  },
+  "71466777_1125348_50cafa274aadc777e23e50eff0986491_full.jpeg": {
+    name: "port-of-new-orleans",
+    title: "Port of New Orleans",
+    note: "Weathered Port of New Orleans signage, dock crane, Crescent City Connection bridge across the Mississippi"
   },
 };
 
