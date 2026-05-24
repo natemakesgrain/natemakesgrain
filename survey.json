@@ -790,6 +790,111 @@
     "tags": []
   },
   {
+    "original": "71745153_1129450_b09ff72344228256bbe7be6ef84881f1_full.jpeg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 54.39,
+    "monochrome": false,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
+    "original": "71745157_1129450_90d3be7636db2798c1a10dc86fbebe62_full.jpeg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 41.33,
+    "monochrome": false,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
+    "original": "71745165_1129450_a582991a2e65f20a2f5d1d5918274e0d_full.jpeg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 66.25,
+    "monochrome": false,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
+    "original": "71745183_1129450_501fb5df84266d42c2085d0304c3974c_full.jpeg",
+    "width": 4363,
+    "height": 3195,
+    "currentRatio": 1.366,
+    "targetLabel": "4:3",
+    "targetRatio": 1.333,
+    "ratioDiff": 0.032,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 52,
+      "top": 0,
+      "width": 4260,
+      "height": 3195
+    },
+    "cropPctLost": 2.4,
+    "meanChroma": 0,
+    "monochrome": true,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
+    "original": "71745193_1129450_f421258f59a1e8cda007d395653b9662_full.jpeg",
+    "width": 4824,
+    "height": 3533,
+    "currentRatio": 1.365,
+    "targetLabel": "4:3",
+    "targetRatio": 1.333,
+    "ratioDiff": 0.032,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 57,
+      "top": 0,
+      "width": 4711,
+      "height": 3533
+    },
+    "cropPctLost": 2.3,
+    "meanChroma": 0,
+    "monochrome": true,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
     "original": "IMG_5153.jpeg",
     "width": 1704,
     "height": 1151,
