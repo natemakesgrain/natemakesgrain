@@ -2,264 +2,360 @@
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import { photos } from "../data/photos.js";
+
+const byId = Object.fromEntries(photos.map(p => [p.id, p]));
+const get = (id) => {
+  const p = byId[id];
+  if (!p) throw new Error(`Photo not found: ${id}`);
+  return p;
+};
+
+/* The monograph sequence. Each entry is a spread the reader
+   scrolls past. Slot types: hero, chapter, full, large,
+   single, offset (left|right), diptych. */
+
+const spreads = [
+  { type: "hero" },
+
+  // I.  SIGN — vernacular surfaces: neon, marquee, painted lettering, storefronts
+  { type: "chapter", num: "I.", name: "Sign", intro: "Neon, marquee, painted lettering. The road traveled past it." },
+  { type: "full",    id: "kings-sandwich-shop-durham", num: "01" },
+  { type: "diptych", ids: ["carolina-cinema-neon", "tennessee-theatre-knoxville"], nums: ["02", "03"] },
+  { type: "large",   id: "bit-and-spur-saloon-springdale-dusk", num: "04" },
+  { type: "diptych", ids: ["boogie-woogie-bourbon", "entrecote-late"], nums: ["05", "06"] },
+  { type: "offset", side: "right", id: "kingfisher-bar-neon-night", num: "07" },
+  { type: "full",    id: "tracks-crossing", num: "08" },
+  { type: "diptych", ids: ["boutique-du-vampyre", "drummers-bourbon"], nums: ["09", "10"] },
+  { type: "diptych", ids: ["guaranteed-shorter-hair-barbershop", "geerhouse-tow-away-durham"], nums: ["11", "12"] },
+  { type: "diptych", ids: ["old-north-durham-open-sign", "bull-city-car-wash-durham"], nums: ["13", "14"] },
+  { type: "single",  id: "texas-neon-adv-co-sign", num: "15" },
+  { type: "offset", side: "left", id: "old-north-bar-sign", num: "16" },
+
+  // II.  ADVENTURE — distance, country, weather, road, the in-between
+  { type: "chapter", num: "II.", name: "Adventure", intro: "Distance, country, weather. The work made on the way." },
+  { type: "full",    id: "country-road-walker-and-dog", num: "17" },
+  { type: "large",   id: "red-sandstone-cliff-canyon-sunset", num: "18" },
+  { type: "large",   id: "zion-canyon-overlook", num: "19" },
+  { type: "diptych", ids: ["park-first-snow", "snowy-tennis-court-lamppost-night"], nums: ["20", "21"] },
+  { type: "diptych", ids: ["snow-day-dog-walk", "outstretched-branch-mountain-overlook"], nums: ["22", "23"] },
+  { type: "single",  id: "wooded-pond-radio-tower", num: "24" },
+  { type: "offset", side: "right", id: "sprawling-mesquite-tree-pavilion", num: "25" },
+  { type: "full",    id: "plaza-mist", num: "26" },
+  { type: "single",  id: "pink-wall-houston", num: "27" },
+
+  // III.  FORM — architecture, monument, doorway, tower, column
+  { type: "chapter", num: "III.", name: "Form", intro: "Architecture, monument, doorway. Stone and concrete and column." },
+  { type: "full",    id: "mission-doorway-san-antonio", num: "28" },
+  { type: "diptych", ids: ["domed-classical-auditorium", "brutalist-concrete-beams"], nums: ["29", "30"] },
+  { type: "single",  id: "industrial-funnel-water-feature", num: "31" },
+  { type: "full",    id: "de-young-museum-tower", num: "32" },
+  { type: "diptych", ids: ["mission-vaulted-interior", "manhattan-looking-downtown"], nums: ["33", "34"] },
+  { type: "offset", side: "left", id: "old-and-new", num: "35" },
+  { type: "diptych", ids: ["architectural-cutout-smokestack", "nyc-subway-tile-wall"], nums: ["36", "37"] },
+
+  // IV.  QUIET — interiors, still lifes, slow time
+  { type: "chapter", num: "IV.", name: "Quiet", intro: "Indoors, mostly. The slow time before and after." },
+  { type: "full",    id: "concourse-grand-central", num: "38" },
+  { type: "diptych", ids: ["houseplant-shop-interior", "stucco-storefront-shadows"], nums: ["39", "40"] },
+  { type: "diptych", ids: ["morning-coffee-table-still-life", "coffee-shop-interior"], nums: ["41", "42"] },
+  { type: "diptych", ids: ["rouses-french-quarter", "woman-brick-wall-piedras-building"], nums: ["43", "44"] },
+  { type: "full",    id: "painted-lady-dusk", num: "45" },
+  { type: "diptych", ids: ["white-telephone-booth-dock", "red-phone-booths-bermuda"], nums: ["46", "47"] },
+  { type: "large",   id: "cherub-fountain-twilight", num: "48" },
+  { type: "single",  id: "one-window-twilight", num: "49" },
+];
+
+const chapterTotal = spreads.filter(s => s.type === "chapter").length;
+
+/* Compute frame counts per chapter so the chapter cards stay honest. */
+const chapterCounts = (() => {
+  const counts = {};
+  let current = null;
+  for (const s of spreads) {
+    if (s.type === "chapter") { current = s.name; counts[current] = 0; }
+    else if (s.type === "diptych" && current) counts[current] += s.ids.length;
+    else if (s.id && current) counts[current] += 1;
+  }
+  return counts;
+})();
+
+let chapterIdx = 0;
+
+const toneLabel = (p) => p.tone === "monochrome" ? "monochrome" : "color";
 ---
-<Base title="Gallery" description="Fine art photography. Americana and landscapes, in monochrome and color, by Nate Jones.">
-  <section class="page">
-    <div class="filters" role="toolbar" aria-label="Gallery filters">
-      <div class="group" data-filter-group="tone">
-        <button class="filter-btn" type="button" data-value="all" aria-pressed="true">all</button>
-        <button class="filter-btn" type="button" data-value="monochrome" aria-pressed="false">monochrome</button>
-        <button class="filter-btn" type="button" data-value="color" aria-pressed="false">color</button>
-      </div>
+<Base
+  title=""
+  description="nate makes grain — an ongoing photograph monograph by Nate Jones. Fine art photography on film, in four movements."
+>
+  {/* HERO */}
+  <section class="hero" id="top">
+    <p class="hero-kicker">an ongoing photograph monograph</p>
+    <h1 class="hero-mark">
+      nate <em>makes</em> grain
+    </h1>
+    <div class="hero-meta">
+      <p class="hero-subtitle">
+        Photographs by <em>Nate Jones</em>, made on Kodak Ektachrome color and Kodak T-MAX black-and-white film. In four movements: sign, adventure, form, quiet.
+      </p>
+      <p class="hero-scroll">scroll to begin</p>
     </div>
-
-    <div class="gallery" id="gallery">
-      {photos.map(p => (
-        <figure
-          class:list={["tile", p.feature && "feature"]}
-          data-tone={p.tone}
-          data-title={p.title}
-          data-id={p.id}
-          tabindex="0"
-        >
-          <Image
-            src={p.src}
-            alt={p.alt}
-            widths={p.feature ? [600, 1000, 1600, 2200] : [400, 700, 1100, 1500]}
-            sizes={p.feature
-              ? "(max-width: 560px) 100vw, (max-width: 900px) 100vw, 50vw"
-              : "(max-width: 560px) 100vw, (max-width: 900px) 50vw, 25vw"}
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>{p.title}</figcaption>
-        </figure>
-      ))}
-    </div>
-
-    <p class="gallery-empty" id="gallery-empty" hidden>No photos match those filters.</p>
   </section>
 
-  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
-    <div class="lightbox-inner">
-      <button class="lightbox-close" type="button" aria-label="Close" data-close>close</button>
-      <img id="lightbox-img" alt="" />
-      <div class="lightbox-meta">
-        <p class="lightbox-title" id="lightbox-title"></p>
-        <a class="lightbox-cta" id="lightbox-inquire" href="/contact/">Inquire about a print →</a>
-      </div>
+  {spreads.slice(1).map((s) => {
+    if (s.type === "chapter") {
+      chapterIdx += 1;
+      const anchor = `chapter-${chapterIdx}`;
+      const mirror = chapterIdx % 2 === 0;
+      return (
+        <section
+          class:list={["chapter", "reveal", mirror && "chapter--mirror"]}
+          id={anchor}
+          data-chapter-name={s.name}
+        >
+          <p class="chapter-num">{s.num}</p>
+          <div class="chapter-body">
+            <h2 class="chapter-name">{s.name}</h2>
+            <p class="chapter-intro">
+              {s.intro}
+              <span class="chapter-count">{chapterCounts[s.name]} frames</span>
+            </p>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === "full") {
+      const p = get(s.id);
+      return (
+        <section class="spread full reveal">
+          <figure class="frame">
+            <button
+              type="button"
+              class="tile"
+              aria-label={`Open ${p.title} in full view`}
+              data-id={p.id}
+              data-title={p.title}
+              data-place={p.alt}
+              data-tone={p.tone}
+              data-num={s.num}
+            >
+              <Image
+                src={p.src}
+                alt={p.alt}
+                widths={[800, 1300, 1800, 2400]}
+                sizes="100vw"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </figure>
+          <p class="caption">
+            <span class="title">{p.title}</span>
+          </p>
+          <span class="page-num">p. {s.num}</span>
+        </section>
+      );
+    }
+
+    if (s.type === "large") {
+      const p = get(s.id);
+      return (
+        <section class="spread large reveal">
+          <figure class="frame">
+            <button
+              type="button"
+              class="tile"
+              aria-label={`Open ${p.title} in full view`}
+              data-id={p.id}
+              data-title={p.title}
+              data-place={p.alt}
+              data-tone={p.tone}
+              data-num={s.num}
+            >
+              <Image
+                src={p.src}
+                alt={p.alt}
+                widths={[600, 1000, 1400, 1800]}
+                sizes="(max-width: 760px) 100vw, min(80vw, 1280px)"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </figure>
+          <p class="caption">
+            <span class="title">{p.title}</span>
+          </p>
+          <span class="page-num">p. {s.num}</span>
+        </section>
+      );
+    }
+
+    if (s.type === "single") {
+      const p = get(s.id);
+      return (
+        <section class="spread single reveal">
+          <figure class="frame">
+            <button
+              type="button"
+              class="tile"
+              aria-label={`Open ${p.title} in full view`}
+              data-id={p.id}
+              data-title={p.title}
+              data-place={p.alt}
+              data-tone={p.tone}
+              data-num={s.num}
+            >
+              <Image
+                src={p.src}
+                alt={p.alt}
+                widths={[500, 800, 1100]}
+                sizes="(max-width: 760px) 100vw, min(56vw, 760px)"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </figure>
+          <p class="caption">
+            <span class="title">{p.title}</span>
+          </p>
+          <span class="page-num">p. {s.num}</span>
+        </section>
+      );
+    }
+
+    if (s.type === "offset") {
+      const p = get(s.id);
+      const side = s.side || "left";
+      return (
+        <section class:list={["spread", "offset", side, "reveal"]}>
+          <div class="frame-row">
+            <figure class="frame">
+              <button
+                type="button"
+                class="tile"
+                aria-label={`Open ${p.title} in full view`}
+                data-id={p.id}
+                data-title={p.title}
+                data-place={p.alt}
+                data-tone={p.tone}
+                data-num={s.num}
+              >
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  widths={[500, 800, 1100]}
+                  sizes="(max-width: 760px) 100vw, min(50vw, 800px)"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </figure>
+            <div class="caption-block">
+              <span class="title">{p.title}</span>
+              <span class="place">{p.alt}</span>
+            </div>
+          </div>
+          <span class="page-num">p. {s.num}</span>
+        </section>
+      );
+    }
+
+    if (s.type === "diptych") {
+      const [a, b] = s.ids.map(get);
+      const [na, nb] = s.nums;
+      return (
+        <section class="spread diptych reveal">
+          <div class="pair">
+            <figure>
+              <div class="frame">
+                <button
+                  type="button"
+                  class="tile"
+                  aria-label={`Open ${a.title} in full view`}
+                  data-id={a.id}
+                  data-title={a.title}
+                  data-place={a.alt}
+                  data-tone={a.tone}
+                  data-num={na}
+                >
+                  <Image
+                    src={a.src}
+                    alt={a.alt}
+                    widths={[400, 600, 900, 1200]}
+                    sizes="(max-width: 760px) 100vw, 45vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p class="caption">
+                <span class="title">{a.title}</span>
+              </p>
+            </figure>
+            <figure>
+              <div class="frame">
+                <button
+                  type="button"
+                  class="tile"
+                  aria-label={`Open ${b.title} in full view`}
+                  data-id={b.id}
+                  data-title={b.title}
+                  data-place={b.alt}
+                  data-tone={b.tone}
+                  data-num={nb}
+                >
+                  <Image
+                    src={b.src}
+                    alt={b.alt}
+                    widths={[400, 600, 900, 1200]}
+                    sizes="(max-width: 760px) 100vw, 45vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
+              </div>
+              <p class="caption">
+                <span class="title">{b.title}</span>
+              </p>
+            </figure>
+          </div>
+          <span class="page-num">p. {na}—{nb}</span>
+        </section>
+      );
+    }
+
+    return null;
+  })}
+
+  {/* EPILOGUE — about + contact integrated as the closing spread */}
+  <section class="epilogue reveal" id="epilogue">
+    <p class="epilogue-kicker">a colophon</p>
+    <h2 class="epilogue-mark">
+      Nate Jones, <em>Durham</em>,<br />North Carolina.
+    </h2>
+
+    <div class="epilogue-prose">
+      <p>
+        Photographs of signs, adventure, form and the quiet hour, made on Kodak Ektachrome color and Kodak T-MAX black-and-white film. The work is patient, observational, and almost always tied to a particular place. The monograph adds frames as new ones are made.
+      </p>
+      <p>
+        Prints, licensing, and editorial assignments go straight to the inbox at <a href="/contact/">the contact page</a>. Replies come from <a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>, not a form.
+      </p>
     </div>
-  </dialog>
+
+    <aside class="epilogue-meta">
+      <dl>
+        <dt>Based in</dt>
+        <dd>Durham, North Carolina</dd>
+        <dt>On film</dt>
+        <dd>Kodak Ektachrome, Kodak T-MAX</dd>
+        <dt>Status</dt>
+        <dd>Ongoing</dd>
+        <dt>Instagram</dt>
+        <dd><a href="https://instagram.com/natemakesgrain" rel="me noopener" target="_blank">@natemakesgrain</a></dd>
+        <dt>Write</dt>
+        <dd><a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a></dd>
+      </dl>
+    </aside>
+  </section>
 </Base>
-
-<script>
-  const tiles = Array.from(document.querySelectorAll<HTMLElement>(".tile"));
-  const empty = document.getElementById("gallery-empty");
-  const groups = document.querySelectorAll<HTMLElement>("[data-filter-group]");
-
-  /* ---------- Absolute-positioned masonry with feature look-ahead ----------
-     Each tile gets pixel-exact top/left/width/height. We walk visible tiles in
-     order; for each one, choose the column (or column pair, for features) that
-     yields the lowest start-y. Before placing a feature, if the two columns it
-     would span are uneven, search forward for a small regular tile that fits in
-     the gap, place that filler first to keep the bottom puzzle-tight. */
-  const gallery = document.getElementById("gallery") as HTMLElement;
-  const COL_BREAKPOINTS = [
-    { minWidth: 1100, cols: 4 },
-    { minWidth: 760,  cols: 3 },
-    { minWidth: 460,  cols: 2 },
-    { minWidth: 0,    cols: 1 },
-  ];
-  const GAP = 16; // px, must match CSS gap
-
-  function colCount() {
-    const w = window.innerWidth;
-    return COL_BREAKPOINTS.find(b => w >= b.minWidth)!.cols;
-  }
-
-  function clearAbs(tile: HTMLElement) {
-    tile.style.left = "";
-    tile.style.top = "";
-    tile.style.width = "";
-    tile.style.height = "";
-  }
-
-  function imgRatio(tile: HTMLElement) {
-    const img = tile.querySelector("img") as HTMLImageElement | null;
-    if (!img || !img.naturalWidth || !img.naturalHeight) return 0;
-    return img.naturalHeight / img.naturalWidth;
-  }
-
-  function layoutAll() {
-    const cols = colCount();
-
-    if (cols < 2) {
-      // Mobile: CSS handles the static flow; clear inline styles.
-      tiles.forEach(clearAbs);
-      gallery.style.height = "";
-      gallery.classList.add("is-laid-out");
-      return;
-    }
-
-    const galleryWidth = gallery.getBoundingClientRect().width;
-    const colWidth = (galleryWidth - GAP * (cols - 1)) / cols;
-
-    // Column bottom-y tracker (in pixels)
-    const colY = new Array(cols).fill(0);
-
-    // Working queue of visible tiles (in DOM order)
-    const visible = tiles.filter(t => {
-      if (t.classList.contains("is-hidden")) {
-        clearAbs(t);
-        return false;
-      }
-      return imgRatio(t) > 0;
-    });
-
-    const placed = new Set<HTMLElement>();
-    const place = (tile: HTMLElement, col: number, span: number) => {
-      const w = colWidth * span + GAP * (span - 1);
-      const h = w * imgRatio(tile);
-      const startY = Math.max(...Array.from({ length: span }, (_, k) => colY[col + k]));
-      tile.style.left = `${col * (colWidth + GAP)}px`;
-      tile.style.top = `${startY}px`;
-      tile.style.width = `${w}px`;
-      tile.style.height = `${h}px`;
-      const newY = startY + h + GAP;
-      for (let k = 0; k < span; k++) colY[col + k] = newY;
-      placed.add(tile);
-    };
-
-    const findBestPos = (span: number) => {
-      let bestCol = 0, bestY = Infinity;
-      for (let c = 0; c <= cols - span; c++) {
-        const y = Math.max(...Array.from({ length: span }, (_, k) => colY[c + k]));
-        if (y < bestY) { bestY = y; bestCol = c; }
-      }
-      return { col: bestCol, y: bestY };
-    };
-
-    for (let i = 0; i < visible.length; i++) {
-      const tile = visible[i];
-      if (placed.has(tile)) continue;
-
-      const isFeature = tile.classList.contains("feature");
-      const span = isFeature && cols >= 2 ? Math.min(2, cols) : 1;
-
-      if (span === 2) {
-        // Find best column pair for the feature.
-        const { col, y } = findBestPos(2);
-        const ya = colY[col], yb = colY[col + 1];
-        const gapHeight = Math.abs(ya - yb);
-
-        // If meaningful gap, scan forward for a small regular tile that fits.
-        if (gapHeight > 24) {
-          const shortCol = ya <= yb ? col : col + 1;
-          const slot = gapHeight; // available space in shorter column
-          let fillerIdx = -1;
-          let fillerCloseness = Infinity;
-          for (let j = i + 1; j < visible.length; j++) {
-            const cand = visible[j];
-            if (placed.has(cand) || cand.classList.contains("feature")) continue;
-            const candHeight = colWidth * imgRatio(cand);
-            if (candHeight + GAP <= slot + 8) { // +8 fuzz
-              const closeness = Math.abs(slot - (candHeight + GAP));
-              if (closeness < fillerCloseness) {
-                fillerCloseness = closeness;
-                fillerIdx = j;
-              }
-            }
-          }
-          if (fillerIdx >= 0) {
-            place(visible[fillerIdx], shortCol, 1);
-            i--; // reconsider this feature position
-            continue;
-          }
-        }
-        place(tile, col, 2);
-      } else {
-        const { col } = findBestPos(1);
-        place(tile, col, 1);
-      }
-    }
-
-    gallery.style.height = `${Math.max(0, ...colY) - GAP}px`;
-    gallery.classList.add("is-laid-out");
-  }
-
-  // Initial: layout once images are decoded.
-  Promise.all(
-    tiles.map(t => {
-      const img = t.querySelector("img") as HTMLImageElement;
-      if (img.complete) return Promise.resolve();
-      return new Promise<void>(res => {
-        img.addEventListener("load", () => res(), { once: true });
-        img.addEventListener("error", () => res(), { once: true });
-      });
-    })
-  ).then(layoutAll);
-
-  // Also layout right away in case some images are already cached.
-  requestAnimationFrame(layoutAll);
-
-  // Recompute on resize (debounced).
-  let raf = 0;
-  window.addEventListener("resize", () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(layoutAll);
-  });
-
-  /* ---------- Filtering ---------- */
-  let selectedTone = "all";
-  groups.forEach(group => {
-    group.querySelectorAll<HTMLButtonElement>(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        selectedTone = btn.dataset.value!;
-        group.querySelectorAll<HTMLButtonElement>(".filter-btn").forEach(b => {
-          b.setAttribute("aria-pressed", String(b === btn));
-        });
-        applyFilters();
-      });
-    });
-  });
-
-  function applyFilters() {
-    let shown = 0;
-    for (const t of tiles) {
-      const tone = t.dataset.tone || "";
-      const visible = selectedTone === "all" || selectedTone === tone;
-      t.classList.toggle("is-hidden", !visible);
-      if (visible) shown++;
-    }
-    if (empty) empty.hidden = shown !== 0;
-    requestAnimationFrame(layoutAll);
-  }
-
-  /* ---------- Lightbox ---------- */
-  const dialog = document.getElementById("lightbox") as HTMLDialogElement;
-  const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
-  const lbTitle = document.getElementById("lightbox-title") as HTMLElement;
-  const lbInquire = document.getElementById("lightbox-inquire") as HTMLAnchorElement;
-
-  tiles.forEach(t => {
-    const open = () => {
-      const img = t.querySelector("img") as HTMLImageElement;
-      lbImg.src = img.currentSrc || img.src;
-      lbImg.alt = img.alt;
-      const title = t.dataset.title || "";
-      lbTitle.textContent = title;
-      const subject = `Print inquiry: ${title}`;
-      lbInquire.href = `/contact/?subject=${encodeURIComponent(subject)}`;
-      if (typeof dialog.showModal === "function") dialog.showModal();
-    };
-    t.addEventListener("click", open);
-    t.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
-    });
-  });
-
-  dialog.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    if (target.matches("[data-close]") || target === dialog) dialog.close();
-  });
-</script>

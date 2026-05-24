@@ -1,23 +1,37 @@
 ---
 import Base from "../layouts/Base.astro";
 ---
-<Base title="About" description="Nate Jones is a fine art photographer based in Durham, North Carolina.">
-  <section class="page prose">
-    <h1>About</h1>
+<Base title="About" description="Nate Jones is a fine art photographer based in Durham, North Carolina, working on Ektachrome and T-MAX film.">
+  <section class="standalone">
+    <p class="standalone-kicker">the photographer</p>
+    <h1 class="standalone-mark">
+      Nate Jones, <em>Durham</em>,<br />North Carolina.
+    </h1>
 
-    <p class="lede">
-      Nate Jones is a fine art photographer based in Durham, North Carolina.
-      He shoots primarily on Kodak Ektachrome and TMax film.
+    <p class="standalone-lede">
+      A fine art photographer based in Durham, North Carolina. The work is made on Kodak Ektachrome and T-MAX film, mostly on long drives. The full body of work lives in <a href="/">the monograph</a>.
     </p>
 
-    <p class="lede">
-      His work centers on Americana and landscape: weathered storefronts and
-      neon, classical and brutalist architecture, open country, the quiet hours.
-    </p>
+    <div class="epilogue-prose">
+      <p>
+        Subjects find him at roadsides and in old buildings: weathered storefronts and neon, classical and brutalist architecture, the open road, and the quiet hours in between. The work is patient, observational, and almost always tied to a particular place.
+      </p>
+      <p>
+        Prints, licensing, and editorial enquiries go straight to the inbox via <a href="/contact/">the contact page</a>.
+      </p>
+    </div>
 
-    <p class="lede">
-      For prints, licensing, or just to say hello, the
-      <a href="/contact/">contact page</a> goes straight to his inbox.
-    </p>
+    <aside class="epilogue-meta" style="margin-top: 2.5rem;">
+      <dl>
+        <dt>Based in</dt>
+        <dd>Durham, North Carolina</dd>
+        <dt>On film</dt>
+        <dd>Kodak Ektachrome, Kodak T-MAX</dd>
+        <dt>Instagram</dt>
+        <dd><a href="https://instagram.com/natemakesgrain" rel="me noopener" target="_blank">@natemakesgrain</a></dd>
+        <dt>Write</dt>
+        <dd><a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a></dd>
+      </dl>
+    </aside>
   </section>
 </Base>

@@ -3,18 +3,20 @@ import Base from "../layouts/Base.astro";
 const subjectFromUrl = Astro.url.searchParams.get("subject") || "";
 const sent = Astro.url.searchParams.get("sent") === "1";
 ---
-<Base title="Contact" description="Get in touch with Nate Jones at nate makes grain.">
-  <section class="page prose">
-    <h1>Contact</h1>
+<Base title="Write" description="Write a note to Nate Jones about prints, licensing, or editorial assignments.">
+  <section class="standalone">
+    <p class="standalone-kicker">a note</p>
+    <h1 class="standalone-mark">
+      Write a <em>note.</em>
+    </h1>
 
-    <p class="lede">
-      Send a note about prints, licensing, or just to say hello. Replies come from
-      <a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>.
+    <p class="standalone-lede">
+      Prints, licensing, editorial assignments, or just to say hello. Replies come from my own inbox, not a form.
     </p>
 
     {sent && (
       <p id="thanks" class="thanks">
-        Thanks, your message went through. I'll reply soon.
+        Thank you. The note came through and I will reply soon.
       </p>
     )}
 
@@ -28,26 +30,27 @@ const sent = Astro.url.searchParams.get("sent") === "1";
     >
       <input type="hidden" name="form-name" value="contact" />
       <p class="honey">
-        <label>Don't fill this out: <input name="bot-field" /></label>
+        <label>Leave this empty: <input name="bot-field" /></label>
       </p>
 
       <label>
-        <span>Name</span>
+        <span>Your name</span>
         <input type="text" name="name" required autocomplete="name" />
       </label>
       <label>
-        <span>Email</span>
+        <span>Your email</span>
         <input type="email" name="email" required autocomplete="email" />
       </label>
       <label>
         <span>Subject</span>
-        <input type="text" name="subject" value={subjectFromUrl} />
+        <input type="text" name="subject" value={subjectFromUrl} placeholder="Print, licensing, hello..." />
       </label>
       <label>
-        <span>Message</span>
+        <span>Your message</span>
         <textarea name="message" required rows="6"></textarea>
       </label>
-      <button type="submit">send</button>
+
+      <button type="submit">send the note</button>
     </form>
   </section>
 </Base>
