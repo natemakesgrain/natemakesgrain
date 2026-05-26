@@ -1488,5 +1488,55 @@
     "feature": false,
     "skip": false,
     "note": "Two weathered industrial storage tanks marked NOT IN USE, dramatic cloud-streaked sky"
+  },
+  {
+    "original": "snow-umbrellas-park.jpg",
+    "width": 3311,
+    "height": 2424,
+    "currentRatio": 1.366,
+    "targetLabel": "4:3",
+    "targetRatio": 1.333,
+    "ratioDiff": 0.033,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 40,
+      "top": 0,
+      "width": 3232,
+      "height": 2424
+    },
+    "cropPctLost": 2.4,
+    "meanChroma": 66.14,
+    "monochrome": false,
+    "descriptiveName": "snow-umbrellas-park",
+    "tags": [],
+    "title": "Snow Umbrellas",
+    "feature": false,
+    "skip": false,
+    "note": "Snowy plaza with red and blue umbrellas over picnic tables, snowfall, misty building behind"
+  },
+  {
+    "original": "sprawling-mesquite-tree-pavilion-bw.jpg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 0,
+    "monochrome": true,
+    "descriptiveName": "sprawling-mesquite-tree-pavilion-bw",
+    "tags": [],
+    "title": "Mesquite, Hill Country",
+    "feature": false,
+    "skip": false,
+    "note": "Sprawling mesquite framed by pavilion (black-and-white version)"
   }
 ]

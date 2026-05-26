@@ -1236,5 +1236,47 @@
     "monochrome": false,
     "descriptiveName": null,
     "tags": []
+  },
+  {
+    "original": "snow-umbrellas-park.jpg",
+    "width": 3311,
+    "height": 2424,
+    "currentRatio": 1.366,
+    "targetLabel": "4:3",
+    "targetRatio": 1.333,
+    "ratioDiff": 0.033,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 40,
+      "top": 0,
+      "width": 3232,
+      "height": 2424
+    },
+    "cropPctLost": 2.4,
+    "meanChroma": 66.14,
+    "monochrome": false,
+    "descriptiveName": null,
+    "tags": []
+  },
+  {
+    "original": "sprawling-mesquite-tree-pavilion-bw.jpg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 0,
+    "monochrome": true,
+    "descriptiveName": null,
+    "tags": []
   }
 ]

@@ -421,11 +421,14 @@ a:hover { color: var(--accent); border-bottom-color: var(--accent); }
   line-height: 1.4;
 }
 
+/* Diptych: tight gap WITHIN the pair (so they read as a pair) and
+   generous gap BETWEEN this spread and the next (the .spread padding-top
+   on neighbouring spreads provides that breath). */
 .spread.diptych { padding-left: var(--pad-x); padding-right: var(--pad-x); }
 .spread.diptych .pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(1rem, 2.5vw, 2.5rem);
+  gap: clamp(8px, 1vw, 16px);
   align-items: center;
 }
 .spread.diptych .pair figure { margin: 0; }
@@ -561,6 +564,21 @@ dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   max-width: 1300px;
   margin: 0 auto;
   align-items: start;
+}
+
+.epilogue-hero {
+  grid-column: 1 / -1;
+  margin: 0 0 clamp(3rem, 6vw, 5rem);
+  display: flex;
+  justify-content: center;
+}
+.epilogue-hero img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
 }
 
 .epilogue-kicker {
@@ -825,7 +843,10 @@ dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   .epilogue { grid-template-columns: 1fr; }
   .spread.diptych .pair {
     grid-template-columns: 1fr;
-    gap: var(--spread-gap);
+    /* on mobile: pair members stack but the gap WITHIN the pair stays
+       tight so they still read as a pair (the spread padding above/below
+       provides the generous between-pair gap). */
+    gap: clamp(8px, 2vw, 12px);
   }
   .spread.offset .frame-row {
     grid-template-columns: 1fr !important;
