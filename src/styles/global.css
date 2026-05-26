@@ -566,18 +566,16 @@ dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   align-items: start;
 }
 
-.epilogue-hero {
-  grid-column: 1 / -1;
-  margin: 0 0 clamp(3rem, 6vw, 5rem);
-  display: flex;
-  justify-content: center;
+.epilogue-aside-image {
+  margin: 0;
+  display: block;
 }
-.epilogue-hero img {
+.epilogue-aside-image img {
   display: block;
   width: 100%;
   max-width: 100%;
   height: auto;
-  max-height: 80vh;
+  max-height: 60vh;
   object-fit: contain;
 }
 

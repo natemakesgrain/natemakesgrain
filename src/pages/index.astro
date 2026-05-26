@@ -25,25 +25,25 @@ const spreads = [
   { type: "chapter", num: "I.", name: "Hours", intro: "Daylight, neon, snow, twilight. The lit hours of place." },
   { type: "full",    id: "kings-sandwich-shop-durham",                                                   num: "01" },
   { type: "diptych", ids: ["shooters-saloon-durham", "bull-city-car-wash-durham"],                       nums: ["02", "03"] },
-  { type: "full",    id: "pink-wall-houston",                                                            num: "04" },
-  { type: "diptych", ids: ["carolina-cinema-neon", "kingfisher-bar-neon-night"],                         nums: ["05", "06"] },
-  { type: "full",    id: "bit-and-spur-saloon-springdale-dusk",                                          num: "07" },
-  { type: "full",    id: "old-north-durham-open-sign",                                                   num: "08" },
-  { type: "diptych", ids: ["plaza-mist", "snow-umbrellas-park"],                                         nums: ["09", "10"] },
-  { type: "diptych", ids: ["park-first-snow", "snowy-tennis-court-lamppost-night"],                      nums: ["11", "12"] },
-  { type: "full",    id: "cherub-fountain-twilight",                                                     num: "13" },
-  { type: "diptych", ids: ["painted-lady-dusk", "one-window-twilight"],                                  nums: ["14", "15"] },
+  { type: "diptych", ids: ["pink-wall-houston", "tracks-crossing"],                                      nums: ["04", "05"] },
+  { type: "diptych", ids: ["carolina-cinema-neon", "kingfisher-bar-neon-night"],                         nums: ["06", "07"] },
+  { type: "full",    id: "bit-and-spur-saloon-springdale-dusk",                                          num: "08" },
+  { type: "full",    id: "old-north-durham-open-sign",                                                   num: "09" },
+  { type: "diptych", ids: ["plaza-mist", "snow-umbrellas-park"],                                         nums: ["10", "11"] },
+  { type: "diptych", ids: ["park-first-snow", "snowy-tennis-court-lamppost-night"],                      nums: ["12", "13"] },
+  { type: "full",    id: "cherub-fountain-twilight",                                                     num: "14" },
+  { type: "diptych", ids: ["painted-lady-dusk", "one-window-twilight"],                                  nums: ["15", "16"] },
 
   // II.  MASS — what holds and outlasts (black-and-white)
   { type: "chapter", num: "II.", name: "Mass", intro: "Doorway, vault, tank, beam. What holds and outlasts." },
-  { type: "full",    id: "architectural-cutout-smokestack",                                              num: "16" },
-  { type: "diptych", ids: ["not-in-use-tanks", "industrial-funnel-water-feature"],                       nums: ["17", "18"] },
-  { type: "diptych", ids: ["mission-doorway-san-antonio", "mission-vaulted-interior"],                   nums: ["19", "20"] },
-  { type: "diptych", ids: ["geerhouse-tow-away-durham", "stucco-storefront-shadows"],                    nums: ["21", "22"] },
-  { type: "diptych", ids: ["brutalist-concrete-beams", "de-young-museum-tower"],                         nums: ["23", "24"] },
-  { type: "full",    id: "domed-classical-auditorium",                                                   num: "25" },
-  { type: "diptych", ids: ["nyc-subway-tile-wall", "concourse-grand-central"],                           nums: ["26", "27"] },
-  { type: "diptych", ids: ["sprawling-mesquite-tree-pavilion-bw", "gooseneck-lamppost-infrared"],        nums: ["28", "29"] },
+  { type: "full",    id: "architectural-cutout-smokestack",                                              num: "17" },
+  { type: "diptych", ids: ["not-in-use-tanks", "industrial-funnel-water-feature"],                       nums: ["18", "19"] },
+  { type: "diptych", ids: ["mission-doorway-san-antonio", "mission-vaulted-interior"],                   nums: ["20", "21"] },
+  { type: "diptych", ids: ["geerhouse-tow-away-durham", "stucco-storefront-shadows"],                    nums: ["22", "23"] },
+  { type: "diptych", ids: ["brutalist-concrete-beams", "de-young-museum-tower"],                         nums: ["24", "25"] },
+  { type: "full",    id: "domed-classical-auditorium",                                                   num: "26" },
+  { type: "diptych", ids: ["nyc-subway-tile-wall", "concourse-grand-central"],                           nums: ["27", "28"] },
+  { type: "diptych", ids: ["sprawling-mesquite-tree-pavilion-bw", "gooseneck-lamppost-infrared"],        nums: ["29", "30"] },
 ];
 
 const chapterTotal = spreads.filter(s => s.type === "chapter").length;
@@ -308,25 +308,9 @@ const toneLabel = (p) => p.tone === "monochrome" ? "monochrome" : "color";
     return null;
   })}
 
-  {/* EPILOGUE — about + contact integrated as the closing spread.
-       Road, with Dog appears as a quiet signature image above the heading. */}
+  {/* EPILOGUE — colophon. Road, with Dog sits in the right column
+       above the meta dl as a quiet anchor image, not a hero. */}
   <section class="epilogue reveal" id="epilogue">
-    {(() => {
-      const p = get("country-road-walker-and-dog");
-      return (
-        <figure class="epilogue-hero">
-          <Image
-            src={p.src}
-            alt={p.alt}
-            widths={[800, 1300, 1800, 2400]}
-            sizes="(max-width: 760px) 100vw, min(100vw, 1300px)"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      );
-    })()}
-
     <p class="epilogue-kicker">a colophon</p>
     <h2 class="epilogue-mark">
       Nate Jones, <em>Durham</em>,<br />North Carolina.
@@ -342,6 +326,21 @@ const toneLabel = (p) => p.tone === "monochrome" ? "monochrome" : "color";
     </div>
 
     <aside class="epilogue-meta">
+      {(() => {
+        const p = get("country-road-walker-and-dog");
+        return (
+          <figure class="epilogue-aside-image">
+            <Image
+              src={p.src}
+              alt={p.alt}
+              widths={[400, 700, 1100]}
+              sizes="(max-width: 760px) 100vw, 36vw"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        );
+      })()}
       <dl>
         <dt>Based in</dt>
         <dd>Durham, North Carolina</dd>
