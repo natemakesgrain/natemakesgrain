@@ -494,14 +494,6 @@ dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   margin: 0;
 }
 
-.lightbox-place {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--ink-quiet);
-  margin: 0.25rem 0 0;
-}
-
 .lightbox-cta {
   font-family: var(--serif);
   font-style: italic;
@@ -564,19 +556,6 @@ dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   max-width: 1300px;
   margin: 0 auto;
   align-items: start;
-}
-
-.epilogue-aside-image {
-  margin: 0;
-  display: block;
-}
-.epilogue-aside-image img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  max-height: 60vh;
-  object-fit: contain;
 }
 
 .epilogue-kicker {

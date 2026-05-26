@@ -26,10 +26,10 @@ const spreads = [
   { type: "full",    id: "kings-sandwich-shop-durham",                                                   num: "01" },
   { type: "diptych", ids: ["shooters-saloon-durham", "bull-city-car-wash-durham"],                       nums: ["02", "03"] },
   { type: "diptych", ids: ["pink-wall-houston", "tracks-crossing"],                                      nums: ["04", "05"] },
-  { type: "diptych", ids: ["carolina-cinema-neon", "kingfisher-bar-neon-night"],                         nums: ["06", "07"] },
-  { type: "full",    id: "bit-and-spur-saloon-springdale-dusk",                                          num: "08" },
-  { type: "full",    id: "old-north-durham-open-sign",                                                   num: "09" },
-  { type: "diptych", ids: ["plaza-mist", "snow-umbrellas-park"],                                         nums: ["10", "11"] },
+  { type: "full",    id: "bit-and-spur-saloon-springdale-dusk",                                          num: "06" },
+  { type: "diptych", ids: ["carolina-cinema-neon", "kingfisher-bar-neon-night"],                         nums: ["07", "08"] },
+  { type: "full",    id: "snow-umbrellas-park",                                                          num: "09" },
+  { type: "diptych", ids: ["plaza-mist", "country-road-walker-and-dog"],                                 nums: ["10", "11"] },
   { type: "diptych", ids: ["park-first-snow", "snowy-tennis-court-lamppost-night"],                      nums: ["12", "13"] },
   { type: "full",    id: "cherub-fountain-twilight",                                                     num: "14" },
   { type: "diptych", ids: ["painted-lady-dusk", "one-window-twilight"],                                  nums: ["15", "16"] },
@@ -308,8 +308,7 @@ const toneLabel = (p) => p.tone === "monochrome" ? "monochrome" : "color";
     return null;
   })}
 
-  {/* EPILOGUE — colophon. Road, with Dog sits in the right column
-       above the meta dl as a quiet anchor image, not a hero. */}
+  {/* EPILOGUE — colophon */}
   <section class="epilogue reveal" id="epilogue">
     <p class="epilogue-kicker">a colophon</p>
     <h2 class="epilogue-mark">
@@ -326,21 +325,6 @@ const toneLabel = (p) => p.tone === "monochrome" ? "monochrome" : "color";
     </div>
 
     <aside class="epilogue-meta">
-      {(() => {
-        const p = get("country-road-walker-and-dog");
-        return (
-          <figure class="epilogue-aside-image">
-            <Image
-              src={p.src}
-              alt={p.alt}
-              widths={[400, 700, 1100]}
-              sizes="(max-width: 760px) 100vw, 36vw"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-        );
-      })()}
       <dl>
         <dt>Based in</dt>
         <dd>Durham, North Carolina</dd>

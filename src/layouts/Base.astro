@@ -58,10 +58,7 @@ const isMonograph = path === "/";
           <button class="lightbox-nav next" type="button" aria-label="Next photograph" data-next>›</button>
           <img id="lightbox-img" alt="" />
           <div class="lightbox-meta">
-            <div>
-              <p class="lightbox-title" id="lightbox-title"></p>
-              <p class="lightbox-place" id="lightbox-place"></p>
-            </div>
+            <p class="lightbox-title" id="lightbox-title"></p>
             <a class="lightbox-cta" id="lightbox-inquire" href="/contact/">request a print</a>
           </div>
         </div>
@@ -104,7 +101,6 @@ const isMonograph = path === "/";
         const tiles = Array.from(document.querySelectorAll('button.tile'));
         const lbImg = document.getElementById('lightbox-img');
         const lbTitle = document.getElementById('lightbox-title');
-        const lbPlace = document.getElementById('lightbox-place');
         const lbInquire = document.getElementById('lightbox-inquire');
         const lbPrev = dialog ? dialog.querySelector('[data-prev]') : null;
         const lbNext = dialog ? dialog.querySelector('[data-next]') : null;
@@ -117,13 +113,11 @@ const isMonograph = path === "/";
           currentIdx = idx;
           const t = tiles[idx];
           const img = t.querySelector('img');
-          if (!img || !lbImg || !lbTitle || !lbPlace || !lbInquire) return;
+          if (!img || !lbImg || !lbTitle || !lbInquire) return;
           lbImg.src = img.currentSrc || img.src;
           lbImg.alt = img.alt;
           const title = t.dataset.title || '';
-          const place = t.dataset.place || '';
           lbTitle.textContent = title;
-          lbPlace.textContent = place;
           const subject = `Print inquiry: ${title}`;
           lbInquire.href = `/contact/?subject=${encodeURIComponent(subject)}`;
           if (lbPrev) lbPrev.disabled = idx <= 0;
