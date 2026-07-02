@@ -1,37 +1,36 @@
 ---
 import "../styles/global.css";
-const { title, description = "An American photograph monograph by Nate Jones." } = Astro.props;
+const { title, description = "Photographs by Nate Jones — Durham, North Carolina." } = Astro.props;
 const path = Astro.url.pathname;
-const isMonograph = path === "/";
+const isHome = path === "/";
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} · nate makes grain` : "nate makes grain"}</title>
+    <title>{title ? `${title} · natemakesgrain` : "natemakesgrain"}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#1a1410" />
+    <meta name="theme-color" content="#1c1815" />
     <meta name="color-scheme" content="dark" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Archivo:ital,wght@0,300;0,400;0,500;1,300&display=swap" />
   </head>
   <body>
-    <header class="float-header" id="float-header" aria-label="Site navigation">
-      <a class="wordmark" href="/">nate makes grain</a>
+    <header class="site-header" aria-label="Site navigation">
+      <a class="wordmark" href="/">natemakesgrain<span class="dot">.</span></a>
       <nav aria-label="Sections">
-        {isMonograph ? (
+        {isHome ? (
           <>
-            <a href="#chapter-1">work</a>
-            <a href="#epilogue">about</a>
-            <a href="/contact/">write</a>
+            <a href="#work">work</a>
+            <a href="#contact">contact</a>
           </>
         ) : (
           <>
-            <a href="/">monograph</a>
-            <a href="/contact/">write</a>
+            <a href="/">work</a>
+            <a href="/#contact">contact</a>
           </>
         )}
       </nav>
@@ -42,64 +41,72 @@ const isMonograph = path === "/";
     </main>
 
     <footer class="site-footer">
-      <span>&copy; {new Date().getFullYear()} nate jones — all photographs by the artist</span>
-      <span class="footer-right">
+      <span>&copy; {new Date().getFullYear()} Nate Jones — all photographs by the artist</span>
+      <span class="right">
         <a href="https://instagram.com/natemakesgrain" rel="me noopener" target="_blank">@natemakesgrain</a>
-        <span aria-hidden="true">·</span>
-        <a href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>
+        <a class="js-copy-mail" href="mailto:nate.jones@natemakesgrain.com">nate.jones@natemakesgrain.com</a>
       </span>
     </footer>
 
-    {isMonograph && (
+    <div class="grain" aria-hidden="true"></div>
+    <div class="copy-toast" id="copy-toast" role="status">nate.jones@natemakesgrain.com — copied ✓</div>
+
+    {isHome && (
+      <div class="placard" id="placard" aria-hidden="true">
+        <span class="num" id="placard-num"></span>
+        <span class="title" id="placard-title"></span>
+      </div>
+    )}
+
+    {isHome && (
       <dialog class="lightbox" id="lightbox" aria-label="Photograph viewer">
         <div class="lightbox-inner">
-          <button class="lightbox-close" type="button" aria-label="Close" data-close>close</button>
+          <button class="lightbox-close" type="button" aria-label="Close" data-close>CLOSE ✕</button>
           <button class="lightbox-nav prev" type="button" aria-label="Previous photograph" data-prev>‹</button>
           <button class="lightbox-nav next" type="button" aria-label="Next photograph" data-next>›</button>
           <img id="lightbox-img" alt="" />
           <div class="lightbox-meta">
-            <p class="lightbox-title" id="lightbox-title"></p>
-            <a class="lightbox-cta" id="lightbox-inquire" href="/contact/">request a print</a>
+            <p><span class="num" id="lightbox-num"></span>&nbsp;&nbsp;<span class="title" id="lightbox-title"></span></p>
+            <a class="lightbox-cta js-copy-mail" id="lightbox-inquire" href="mailto:nate.jones@natemakesgrain.com">request a print →</a>
           </div>
         </div>
       </dialog>
     )}
 
-    {isMonograph && (
-      <script>
-        /* Show floating header once the user scrolls past the hero. */
-        const header = document.getElementById('float-header');
-        const hero = document.querySelector('.hero');
-        if (header && hero) {
-          const io = new IntersectionObserver(([entry]) => {
-            header.classList.toggle('is-visible', !entry.isIntersecting);
-          }, { rootMargin: '-30% 0px 0px 0px' });
-          io.observe(hero);
-          hero.classList.add('is-loaded');
-        } else if (header) {
-          header.classList.add('is-visible');
-        }
+    <script>
+      /* Copy-address fallback on every mail link (also fires alongside mailto).
+         The toast only shows once the clipboard write actually succeeds, and is
+         reparented into an open <dialog> so it isn't hidden by the top layer. */
+      const toast = document.getElementById('copy-toast');
+      let toastT;
+      function showToast() {
+        if (!toast) return;
+        const host = document.querySelector('dialog[open]') || document.body;
+        if (toast.parentElement !== host) host.appendChild(toast);
+        toast.classList.add('show');
+        clearTimeout(toastT);
+        toastT = setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+      document.querySelectorAll('.js-copy-mail').forEach((el) => {
+        el.addEventListener('click', () => {
+          if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+          navigator.clipboard.writeText('nate.jones@natemakesgrain.com').then(showToast).catch(() => {});
+        });
+      });
+    </script>
 
-        /* Reveal-on-scroll for spreads. */
-        const revealEls = document.querySelectorAll('.reveal');
-        if ('IntersectionObserver' in window) {
-          const ro = new IntersectionObserver((entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                ro.unobserve(e.target);
-              }
-            }
-          }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-          revealEls.forEach(el => ro.observe(el));
-        } else {
-          revealEls.forEach(el => el.classList.add('in'));
-        }
+    {isHome && (
+      <script>
+        /* ---------- Hover placard ---------- */
+        const placard = document.getElementById('placard');
+        const pNum = document.getElementById('placard-num');
+        const pTitle = document.getElementById('placard-title');
 
         /* ---------- Lightbox ---------- */
         const dialog = document.getElementById('lightbox');
         const tiles = Array.from(document.querySelectorAll('button.tile'));
         const lbImg = document.getElementById('lightbox-img');
+        const lbNum = document.getElementById('lightbox-num');
         const lbTitle = document.getElementById('lightbox-title');
         const lbInquire = document.getElementById('lightbox-inquire');
         const lbPrev = dialog ? dialog.querySelector('[data-prev]') : null;
@@ -108,31 +115,41 @@ const isMonograph = path === "/";
         let currentIdx = -1;
         let triggerEl = null;
 
+        tiles.forEach((t, i) => {
+          t.addEventListener('mouseenter', () => {
+            if (!placard) return;
+            pNum.textContent = t.dataset.num || '';
+            pTitle.textContent = t.dataset.title || '';
+            placard.classList.add('show');
+          });
+          t.addEventListener('mouseleave', () => {
+            if (placard) placard.classList.remove('show');
+          });
+          t.addEventListener('click', () => openAt(i, t));
+        });
+
         function showAt(idx) {
           if (idx < 0 || idx >= tiles.length) return;
           currentIdx = idx;
           const t = tiles[idx];
           const img = t.querySelector('img');
-          if (!img || !lbImg || !lbTitle || !lbInquire) return;
+          if (!img || !lbImg) return;
           lbImg.src = img.currentSrc || img.src;
           lbImg.alt = img.alt;
-          const title = t.dataset.title || '';
-          lbTitle.textContent = title;
-          const subject = `Print inquiry: ${title}`;
-          lbInquire.href = `/contact/?subject=${encodeURIComponent(subject)}`;
+          lbNum.textContent = (t.dataset.num || '') + '/' + tiles.length;
+          lbTitle.textContent = t.dataset.title || '';
+          lbInquire.href = 'mailto:nate.jones@natemakesgrain.com?subject=' +
+            encodeURIComponent('Print inquiry: ' + (t.dataset.title || ''));
           if (lbPrev) lbPrev.disabled = idx <= 0;
           if (lbNext) lbNext.disabled = idx >= tiles.length - 1;
         }
 
         function openAt(idx, opener) {
           triggerEl = opener;
+          if (placard) placard.classList.remove('show');
           showAt(idx);
           if (dialog && typeof dialog.showModal === 'function') dialog.showModal();
         }
-
-        tiles.forEach((t, i) => {
-          t.addEventListener('click', () => openAt(i, t));
-        });
 
         if (dialog) {
           if (lbPrev) lbPrev.addEventListener('click', () => showAt(currentIdx - 1));
@@ -145,24 +162,16 @@ const isMonograph = path === "/";
 
           dialog.addEventListener('click', (e) => {
             const target = e.target;
-            if (target && (target.matches('[data-close]') || target === dialog)) dialog.close();
+            if (target && (target.matches('[data-close]') || target === dialog ||
+                target.classList.contains('lightbox-inner'))) dialog.close();
           });
 
           dialog.addEventListener('close', () => {
-            if (triggerEl && typeof triggerEl.focus === 'function') {
-              triggerEl.focus({ preventScroll: false });
-            }
+            if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
             triggerEl = null;
             currentIdx = -1;
           });
         }
-      </script>
-    )}
-
-    {!isMonograph && (
-      <script>
-        const header = document.getElementById('float-header');
-        if (header) header.classList.add('is-visible');
       </script>
     )}
   </body>

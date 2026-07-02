@@ -4,3 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# The about page was removed in the Darkroom redesign; keep the old URL alive.
+[[redirects]]
+  from = "/about/"
+  to = "/"
+  status = 301
