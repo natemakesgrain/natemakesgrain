@@ -1300,9 +1300,9 @@
     "note": "White stucco storefront with deep shadows"
   },
   {
-    "original": "_DSC1516 (2).jpg",
-    "width": 3332,
-    "height": 4998,
+    "original": "_DSC1516 (3).jpg",
+    "width": 3212,
+    "height": 4818,
     "currentRatio": 0.667,
     "targetLabel": "2:3",
     "targetRatio": 0.667,
@@ -1310,7 +1310,7 @@
     "needsCrop": false,
     "cropBox": null,
     "cropPctLost": 0,
-    "meanChroma": 71.11,
+    "meanChroma": 72.31,
     "monochrome": false,
     "descriptiveName": "one-window-twilight",
     "tags": [],
