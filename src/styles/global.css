@@ -146,6 +146,9 @@ a { color: inherit; }
    Spreads
    ========================================================= */
 .spread { padding: var(--spread-gap) 0 0; }
+/* Movement boundary — the "page turn": extra breathing room so a tonal
+   rupture (dawn→chroma, autumn→snow, color→B&W) reads as intentional. */
+.spread.turn { padding-top: calc(var(--spread-gap) * 1.75); }
 
 .spread .tile {
   appearance: none; background: none; border: 0; padding: 0;
@@ -172,6 +175,22 @@ a { color: inherit; }
   max-height: 94vh;
   width: auto; height: auto;
 }
+
+/* Bleed plates: a full-spread photograph runs to the viewport edge on its
+   constrained axis — vertically for portrait frames on landscape screens,
+   horizontally on portrait screens — so the plate reads at full size the
+   way a full-bleed page does in a photobook. The closer stays contained. */
+@media (orientation: landscape) {
+  .spread.full:not(.closer) img {
+    max-height: 100vh;
+    max-height: 100svh;
+  }
+}
+@media (orientation: portrait) {
+  .spread.full:not(.closer) img { max-width: 100vw; }
+  .spread.full:not(.closer) .frame-num { padding-left: var(--pad-x); }
+}
+
 .spread.full.closer { padding-top: clamp(90px, 16vh, 180px); }
 .spread.full.closer img { max-width: min(92vw, 900px); max-height: 96vh; }
 

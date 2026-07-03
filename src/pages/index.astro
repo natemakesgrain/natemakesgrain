@@ -10,25 +10,37 @@ const get = (id) => {
   return p;
 };
 
-/* One portfolio, nineteen frames. "full" spreads get the page to
-   themselves; "pair" spreads share it. Frame numbers run 01–19.
-   The hero is frame 01. Captions appear only on hover (placard)
-   and in the lightbox. */
+/* One portfolio, nineteen frames, five movements — sequenced as tonal
+   music: a violet-blue nocturne (01–03), a chroma crescendo peaking at
+   King's (04–07), a snow decrescendo (08–11), a B&W adagio (12–18),
+   and a colored coda (19) that answers the hero. "full" spreads are
+   plates that bleed to the viewport edge on their constrained axis;
+   "turn" marks a movement boundary with extra breathing room. Pair
+   order is deliberate: gaze/vectors bind toward the gutter. */
 
 const hero = { id: "fisherman-at-blue-hour", num: "01" };
 
 const spreads = [
-  { type: "pair", ids: ["cherub-fountain-twilight", "azure"],                              nums: ["02", "03"] },
-  { type: "full", id: "kings-sandwich-shop-durham",                                        num: "04" },
-  { type: "pair", ids: ["pink-wall-houston", "durham-chesterfield-warehouse"],             nums: ["05", "06"] },
-  { type: "pair", ids: ["plaza-mist", "snowy-tennis-court-lamppost-night"],                nums: ["07", "08"] },
-  { type: "pair", ids: ["country-road-walker-and-dog", "park-first-snow"],                 nums: ["09", "10"] },
-  { type: "full", id: "snow-umbrellas-park",                                               num: "11" },
-  { type: "full", id: "circus-circus-clown-las-vegas",                                     num: "12" },
-  { type: "pair", ids: ["de-young-museum-tower", "architectural-cutout-smokestack"],       nums: ["13", "14"] },
+  /* I. Nocturne — the hero's grammar restated: small figure, vast dusk field */
+  { type: "pair", ids: ["cherub-fountain-twilight", "country-road-walker-and-dog"],        nums: ["02", "03"] },
+  /* II. Crescendo — dawn breaks cyan, chroma builds to hard sun */
+  { type: "full", id: "azure",                                                             num: "04",
+    sizes: "(orientation: landscape) 80vh, 100vw" },
+  { type: "pair", ids: ["pink-wall-houston", "plaza-mist"],                                nums: ["05", "06"], turn: true },
+  { type: "full", id: "kings-sandwich-shop-durham",                                        num: "07",
+    sizes: "(orientation: landscape) 100vh, 100vw" },
+  /* III. Decrescendo — the lights come on, snow drains the palette */
+  { type: "pair", ids: ["durham-chesterfield-warehouse", "snowy-tennis-court-lamppost-night"], nums: ["08", "09"], turn: true },
+  { type: "pair", ids: ["park-first-snow", "snow-umbrellas-park"],                         nums: ["10", "11"] },
+  /* IV. Adagio — color falls away; monuments, apertures, drought, exhale */
+  { type: "pair", ids: ["circus-circus-clown-las-vegas", "de-young-museum-tower"],         nums: ["12", "13"], turn: true },
+  { type: "full", id: "architectural-cutout-smokestack",                                   num: "14",
+    sizes: "(orientation: landscape) min(133vh, 1500px), 100vw" },
   { type: "pair", ids: ["mission-doorway-san-antonio", "sprawling-mesquite-tree-pavilion-bw"], nums: ["15", "16"] },
   { type: "pair", ids: ["low-water", "white-tower"],                                       nums: ["17", "18"] },
-  { type: "full", id: "one-window-twilight",                                               num: "19", closer: true },
+  /* V. Coda — color returns: one lit window answers the fisherman */
+  { type: "full", id: "one-window-twilight",                                               num: "19", closer: true,
+    sizes: "(orientation: landscape) min(64vh, 900px), 92vw" },
 ];
 
 const heroPhoto = get(hero.id);
@@ -70,7 +82,7 @@ const heroPhoto = get(hero.id);
     if (s.type === "full") {
       const p = get(s.id);
       return (
-        <section class:list={["spread", "full", s.closer && "closer"]} id={anchor}>
+        <section class:list={["spread", "full", s.closer && "closer", s.turn && "turn"]} id={anchor}>
           <div class="stack">
             <button
               type="button"
@@ -83,9 +95,7 @@ const heroPhoto = get(hero.id);
                 src={p.src}
                 alt={p.alt}
                 widths={[800, 1300, 1800, 2400]}
-                sizes={s.closer
-                  ? "(max-width: 978px) 92vw, 900px"
-                  : "(max-width: 1562px) 96vw, 1500px"}
+                sizes={s.sizes}
                 loading="lazy"
                 decoding="async"
               />
@@ -99,7 +109,7 @@ const heroPhoto = get(hero.id);
     const [a, b] = s.ids.map(get);
     const [na, nb] = s.nums;
     return (
-      <section class="spread pair" id={anchor}>
+      <section class:list={["spread", "pair", s.turn && "turn"]} id={anchor}>
         <figure>
           <button
             type="button"
