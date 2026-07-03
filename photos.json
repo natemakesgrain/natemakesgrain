@@ -1300,9 +1300,9 @@
     "note": "White stucco storefront with deep shadows"
   },
   {
-    "original": "_DSC1516.jpg",
-    "width": 5921,
-    "height": 8882,
+    "original": "_DSC1516 (2).jpg",
+    "width": 3332,
+    "height": 4998,
     "currentRatio": 0.667,
     "targetLabel": "2:3",
     "targetRatio": 0.667,
@@ -1310,14 +1310,14 @@
     "needsCrop": false,
     "cropBox": null,
     "cropPctLost": 0,
-    "meanChroma": 66.62,
+    "meanChroma": 71.11,
     "monochrome": false,
     "descriptiveName": "one-window-twilight",
     "tags": [],
     "title": "One Window, Twilight",
     "feature": false,
     "skip": false,
-    "note": "Apartment building at blue hour, single lit upstairs window"
+    "note": "Apartment building at blue hour, a figure seated in the one lit window"
   },
   {
     "original": "_DSC1517.jpg",
@@ -1565,9 +1565,9 @@
     "note": "Fisherman on dark rocks at blue hour, deep blue sea"
   },
   {
-    "original": "Azure.jpg",
-    "width": 2747,
-    "height": 3434,
+    "original": "IMG_8708.tiff",
+    "width": 2486,
+    "height": 3108,
     "currentRatio": 0.8,
     "targetLabel": "4:5",
     "targetRatio": 0.8,
@@ -1575,7 +1575,7 @@
     "needsCrop": false,
     "cropBox": null,
     "cropPctLost": 0,
-    "meanChroma": 45,
+    "meanChroma": 39.07,
     "monochrome": false,
     "descriptiveName": "azure",
     "tags": [],
