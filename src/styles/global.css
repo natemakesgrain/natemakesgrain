@@ -176,10 +176,12 @@ a { color: inherit; }
   width: auto; height: auto;
 }
 
-/* Bleed plates: a full-spread photograph runs to the viewport edge on its
-   constrained axis — vertically for portrait frames on landscape screens,
-   horizontally on portrait screens — so the plate reads at full size the
-   way a full-bleed page does in a photobook. The closer stays contained. */
+/* Bleed plates: a full-spread photograph always runs to the viewport edge
+   on whichever axis constrains it — top-to-bottom on landscape screens,
+   side-to-side on portrait ones — the way a full-bleed page works in a
+   photobook. No width cap: the viewport itself is the plate size.
+   The closer stays contained (a quiet last page). */
+.spread.full:not(.closer) img { max-width: 100vw; }
 @media (orientation: landscape) {
   .spread.full:not(.closer) img {
     max-height: 100vh;
@@ -187,7 +189,6 @@ a { color: inherit; }
   }
 }
 @media (orientation: portrait) {
-  .spread.full:not(.closer) img { max-width: 100vw; }
   .spread.full:not(.closer) .frame-num { padding-left: var(--pad-x); }
 }
 
