@@ -170,17 +170,22 @@
     "note": "Bare branch reaching over distant valley"
   },
   {
-    "original": "70337828_1105568_477d858233af4fe267a1ca4c84dc4fe1_full.jpeg",
-    "width": 4685,
-    "height": 4685,
-    "currentRatio": 1,
+    "original": "Kings Sandwich Shop.jpg",
+    "width": 4760,
+    "height": 4689,
+    "currentRatio": 1.015,
     "targetLabel": "1:1",
     "targetRatio": 1,
-    "ratioDiff": 0,
-    "needsCrop": false,
-    "cropBox": null,
-    "cropPctLost": 0,
-    "meanChroma": 54.73,
+    "ratioDiff": 0.015,
+    "needsCrop": true,
+    "cropBox": {
+      "left": 36,
+      "top": 0,
+      "width": 4689,
+      "height": 4689
+    },
+    "cropPctLost": 1.5,
+    "meanChroma": 63.09,
     "monochrome": false,
     "descriptiveName": "kings-sandwich-shop-durham",
     "tags": [],
@@ -310,7 +315,7 @@
     "note": "Pond framed by trees, radio tower in distance"
   },
   {
-    "original": "70424549_1108394_45fc94baa77d33077347ea4ee18b2937_full.jpeg",
+    "original": "70424549_1108394_45fc94baa77d33077347ea4ee18b2937_full.jpg",
     "width": 4832,
     "height": 4760,
     "currentRatio": 1.015,
@@ -332,7 +337,7 @@
     "title": "de Young, Tower",
     "feature": true,
     "skip": false,
-    "note": "de Young Museum twisted tower, San Francisco"
+    "note": "de Young Museum twisted tower, San Francisco, infrared black and white"
   },
   {
     "original": "70424635_1108394_ee4ab37adf5cf414f305fd7fc90419bc_full.jpeg",
@@ -552,7 +557,7 @@
     "title": "Doorway, Mission",
     "feature": true,
     "skip": false,
-    "note": "Mission doorway opening to courtyard"
+    "note": "Mission doorway opening to courtyard, black and white"
   },
   {
     "original": "71029938_1117848_eb37732084c7c1104811ed95bc14688d_full.jpeg",
@@ -655,7 +660,7 @@
     "note": "Crisscrossing concrete beams"
   },
   {
-    "original": "71234534_1120763_ff7fb2c80f4c79837d7e81c29bdd20be_full.jpeg",
+    "original": "71234534_1120763_ff7fb2c80f4c79837d7e81c29bdd20be_full (1).jpeg",
     "width": 2796,
     "height": 2048,
     "currentRatio": 1.365,
@@ -780,24 +785,24 @@
     "note": "Grand Central main concourse, slow shutter, motion-blurred crowd"
   },
   {
-    "original": "71466759_1125348_09d96cffe3399f19810c08bfac7c319e_full.jpeg",
-    "width": 3077,
-    "height": 4103,
-    "currentRatio": 0.75,
-    "targetLabel": "3:4",
-    "targetRatio": 0.75,
+    "original": "71466759_1125348_09d96cffe3399f19810c08bfac7c319e_full (2).jpeg",
+    "width": 4653,
+    "height": 4653,
+    "currentRatio": 1,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
     "ratioDiff": 0,
     "needsCrop": false,
     "cropBox": null,
     "cropPctLost": 0,
-    "meanChroma": 47.21,
+    "meanChroma": 68.75,
     "monochrome": false,
     "descriptiveName": "plaza-mist",
     "tags": [],
     "title": "Plaza, Mist",
     "feature": false,
     "skip": false,
-    "note": "Cooling-mist canopies with figure crouched in the steam, parked bicycle in foreground (recropped)"
+    "note": "Cooling-mist canopies with figures in the steam, child's bicycle in foreground"
   },
   {
     "original": "71466762_1125348_b1583f038b9cbf8d60535759d4b623cd_full.jpeg",
@@ -975,29 +980,29 @@
     "note": "NYC subway station tile wall"
   },
   {
-    "original": "IMG_5204.jpeg",
-    "width": 4509,
-    "height": 3543,
-    "currentRatio": 1.273,
-    "targetLabel": "4:3",
-    "targetRatio": 1.333,
-    "ratioDiff": 0.061,
+    "original": "72656295_1140968_93d330b61bd3315e1c2a1670cdb111d0_full.jpeg",
+    "width": 4832,
+    "height": 4760,
+    "currentRatio": 1.015,
+    "targetLabel": "1:1",
+    "targetRatio": 1,
+    "ratioDiff": 0.015,
     "needsCrop": true,
     "cropBox": {
-      "left": 0,
-      "top": 81,
-      "width": 4509,
-      "height": 3382
+      "left": 36,
+      "top": 0,
+      "width": 4760,
+      "height": 4760
     },
-    "cropPctLost": 4.5,
-    "meanChroma": 0,
-    "monochrome": true,
+    "cropPctLost": 1.5,
+    "meanChroma": 45.56,
+    "monochrome": false,
     "descriptiveName": "durham-chesterfield-warehouse",
     "tags": [],
     "title": "Chesterfield, Durham",
     "feature": false,
     "skip": false,
-    "note": "Warehouse with Chesterfield sign behind, Durham NC"
+    "note": "Chesterfield sign over a sunlit corner storefront, Durham NC"
   },
   {
     "original": "IMG_5205.jpeg",
@@ -1515,7 +1520,7 @@
     "note": "Snowy plaza with red and blue umbrellas over picnic tables, snowfall, misty building behind"
   },
   {
-    "original": "sprawling-mesquite-tree-pavilion-bw.jpg",
+    "original": "71029944_1117848_a79fc8dbfdc0a43a0b59adba1748b6c2_full (1).jpeg",
     "width": 4832,
     "height": 4760,
     "currentRatio": 1.015,
@@ -1537,7 +1542,7 @@
     "title": "Mesquite, Hill Country",
     "feature": false,
     "skip": false,
-    "note": "Sprawling mesquite framed by pavilion (black-and-white version)"
+    "note": "Sprawling mesquite framed by pavilion, bench and wet stone, black and white"
   },
   {
     "original": "Fisherman at blue hour.jpg",
