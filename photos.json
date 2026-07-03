@@ -1545,7 +1545,7 @@
     "note": "Sprawling mesquite framed by pavilion, bench and wet stone, black and white"
   },
   {
-    "original": "IMG_8715.tiff",
+    "original": "IMG_8715.jpg",
     "width": 4832,
     "height": 4760,
     "currentRatio": 1.015,
@@ -1560,7 +1560,7 @@
       "height": 4760
     },
     "cropPctLost": 1.5,
-    "meanChroma": 94.81,
+    "meanChroma": 109.91,
     "monochrome": false,
     "descriptiveName": "fisherman-at-blue-hour",
     "tags": [],
