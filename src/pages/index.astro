@@ -10,36 +10,42 @@ const get = (id) => {
   return p;
 };
 
-/* One portfolio, nineteen frames, five movements — sequenced as tonal
-   music: a violet-blue nocturne (01–03), a chroma crescendo peaking at
-   King's (04–07), a snow decrescendo (08–11), a B&W adagio (12–18),
-   and a colored coda (19) that answers the hero. "full" spreads are
-   plates that bleed to the viewport edge on their constrained axis;
-   "turn" marks a movement boundary with extra breathing room. Pair
-   order is deliberate: gaze/vectors bind toward the gutter. */
+/* One portfolio, twenty-three frames, one continuous story — out and
+   back, dark to dark: the sea before dawn, blue morning, the loud town,
+   out into the wild, the light dying into winter, the stark B&W west,
+   and home to one lit window. "full" spreads are plates that bleed to
+   the viewport edge on their constrained axis. Pair order is
+   deliberate: gaze/vectors bind toward the gutter. */
 
 const hero = { id: "fisherman-at-blue-hour", num: "01" };
 
 const spreads = [
-  /* I. Nocturne — the hero's grammar restated: small figure, vast dusk field */
-  { type: "pair", ids: ["cherub-fountain-twilight", "country-road-walker-and-dog"],        nums: ["02", "03"] },
-  /* II. Crescendo — dawn breaks cyan, chroma builds to hard sun */
-  { type: "full", id: "azure",                                                             num: "04",
+  /* the dark we set out in: fountain-glow and star-wheel */
+  { type: "pair", ids: ["cherub-fountain-twilight", "star-trails-pines"],                  nums: ["02", "03"] },
+  /* blue morning: sea-corner and city-corner, then summer in order */
+  { type: "pair", ids: ["azure", "red-white-corner-shadow"],                               nums: ["04", "05"] },
+  { type: "full", id: "beach-club-umbrellas",                                              num: "06",
     sizes: "(orientation: landscape) 80vh, 100vw" },
-  { type: "pair", ids: ["pink-wall-houston", "plaza-mist"],                                nums: ["05", "06"], turn: true },
-  { type: "full", id: "kings-sandwich-shop-durham",                                        num: "07",
+  /* the town, loud: pink answers turquoise, then the red peak */
+  { type: "pair", ids: ["pink-wall-houston", "turquoise-peeling-wall"],                    nums: ["07", "08"] },
+  { type: "full", id: "kings-sandwich-shop-durham",                                        num: "09",
     sizes: "(orientation: landscape) 100vh, 100vw" },
-  /* III. Decrescendo — the lights come on, snow drains the palette */
-  { type: "pair", ids: ["durham-chesterfield-warehouse", "snowy-tennis-court-lamppost-night"], nums: ["08", "09"], turn: true },
-  { type: "pair", ids: ["park-first-snow", "snow-umbrellas-park"],                         nums: ["10", "11"] },
-  /* IV. Adagio — color falls away; monuments, apertures, drought, exhale */
-  { type: "pair", ids: ["circus-circus-clown-las-vegas", "de-young-museum-tower"],         nums: ["12", "13"], turn: true },
-  { type: "full", id: "architectural-cutout-smokestack",                                   num: "14",
+  /* out there: the town's made water beside wild water, then the far point */
+  { type: "pair", ids: ["plaza-mist", "avalanche-creek-gorge"],                            nums: ["10", "11"] },
+  { type: "full", id: "going-to-the-sun-valley",                                           num: "12",
+    sizes: "(orientation: landscape) 151vh, 100vw" },
+  /* the turn: two warm lights as the day dies, then winter's showpiece */
+  { type: "pair", ids: ["durham-chesterfield-warehouse", "snowy-tennis-court-lamppost-night"], nums: ["13", "14"] },
+  { type: "full", id: "snow-umbrellas-park",                                               num: "15",
     sizes: "(orientation: landscape) 133vh, 100vw" },
-  { type: "pair", ids: ["mission-doorway-san-antonio", "sprawling-mesquite-tree-pavilion-bw"], nums: ["15", "16"] },
-  { type: "pair", ids: ["low-water", "white-tower"],                                       nums: ["17", "18"] },
-  /* V. Coda — color returns: one lit window answers the fisherman */
-  { type: "full", id: "one-window-twilight",                                               num: "19", closer: true,
+  /* the stark west: color falls away with the circus stripes */
+  { type: "pair", ids: ["circus-circus-clown-las-vegas", "de-young-museum-tower"],         nums: ["16", "17"] },
+  { type: "full", id: "architectural-cutout-smokestack",                                   num: "18",
+    sizes: "(orientation: landscape) 133vh, 100vw" },
+  { type: "pair", ids: ["paddleboarder-lake-mcdonald", "low-water"],                       nums: ["19", "20"] },
+  { type: "pair", ids: ["not-in-use-tanks", "white-tower"],                                nums: ["21", "22"] },
+  /* home: one lit window answers the fisherman */
+  { type: "full", id: "one-window-twilight",                                               num: "23", closer: true,
     sizes: "(orientation: landscape) min(64vh, 900px), 92vw" },
 ];
 
@@ -72,7 +78,7 @@ const heroPhoto = get(hero.id);
         <h1 class="hero-mark">natemakesgrain<span class="dot">.</span></h1>
         <p class="hero-byline">photographs by Nate Jones — Durham, North Carolina</p>
       </div>
-      <p class="hero-count">19 FRAMES ↓</p>
+      <p class="hero-count">23 FRAMES ↓</p>
     </div>
   </section>
 
@@ -82,7 +88,7 @@ const heroPhoto = get(hero.id);
     if (s.type === "full") {
       const p = get(s.id);
       return (
-        <section class:list={["spread", "full", s.closer && "closer", s.turn && "turn"]} id={anchor}>
+        <section class:list={["spread", "full", s.closer && "closer"]} id={anchor}>
           <div class="stack">
             <button
               type="button"
@@ -109,7 +115,7 @@ const heroPhoto = get(hero.id);
     const [a, b] = s.ids.map(get);
     const [na, nb] = s.nums;
     return (
-      <section class:list={["spread", "pair", s.turn && "turn"]} id={anchor}>
+      <section class="spread pair" id={anchor}>
         <figure>
           <button
             type="button"
